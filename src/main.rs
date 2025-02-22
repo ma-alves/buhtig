@@ -1,19 +1,13 @@
-// Tratar erros no status_code, ver doc da api do github
-// Trocar tipos em User para Result ou Option pois a api retorna null
-// Mudar retorno de main pq né pqp
-// TALVEZ usar async
-
 use clap::Parser;
 use dotenv::dotenv;
 use serde::{Serialize, Deserialize};
 use reqwest::{blocking, header::{self, HeaderMap, ACCEPT, AUTHORIZATION, USER_AGENT}};
 
-
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args = Cli::parse();
     println!("Username: {:?}", args.username);
 
-    run(&args.username)?;
+    run(&args.username).expect("omg im sorry");
 
     Ok(())
 }
@@ -46,11 +40,11 @@ fn run(username: &str) -> Result<(), Box<dyn std::error::Error>> {
     
     let client = blocking::Client::builder()
         .default_headers(headers)
-        .build()?;
+        .build().expect("Something something didnt work.");
 
     let response: User = client.get(url)
-        .send()?
-        .json()?;
+        .send().expect("Many many things.")
+        .json().expect("Response body is not in json format.");
     
     println!("{:#?}", response);
     
