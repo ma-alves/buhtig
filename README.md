@@ -4,6 +4,6 @@ Command line interface tool for collecting info about users and repositories on 
 ## Crates
 - [clap](https://docs.rs/clap/latest/clap/) - CLI  
 - [reqwest](https://docs.rs/reqwest/latest/reqwest/) - HTTP Client  
-- [serde](https://docs.rs/serde/latest/serde/) - Serializer  
+- [serde](https://docs.rs/serde/latest/serde/) - Serializer and Deserializer  
 
 ## WIP
