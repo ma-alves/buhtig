@@ -1,4 +1,5 @@
 mod client;
+mod models;
 
 use clap::Parser;
 use crate::client::run;
