@@ -6,8 +6,6 @@ use crate::client::run;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args = Cli::parse();
-    
-    println!("User: {:?}", args.username);
 
     run(&args.username).expect("omg im sorry");
 
