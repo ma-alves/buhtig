@@ -1,7 +1,6 @@
 use crate::models;
 use reqwest::{blocking, header::{HeaderMap, USER_AGENT}};
 
-
 pub fn run(username: &str) -> Result<(), Box<dyn std::error::Error>> {
     let mut headers = HeaderMap::new();
     headers.insert(USER_AGENT, "ma-alves".parse().unwrap());
@@ -44,34 +43,34 @@ pub fn run(username: &str) -> Result<(), Box<dyn std::error::Error>> {
 pub fn match_event(event: models::Event) -> String {
     match event.type_.as_str() {
         "CreateEvent" => {
-            format!("\n[{}] {} criou o repositório \"{}\" em {}\n", event.id, event.actor.login, event.repo.name, event.created_at)
+            format!("\n[{}] {} criou o repositório \"{}\" em {}", event.id, event.actor.login, event.repo.name, event.created_at)
         }
         "DeleteEvent" => {
-            format!("\n[{}] {} deletou o repositório \"{}\" em {}\n", event.id, event.actor.login, event.repo.name, event.created_at)
+            format!("\n[{}] {} deletou o repositório \"{}\" em {}", event.id, event.actor.login, event.repo.name, event.created_at)
         }
         "ForkEvent" => {
-            format!("\n[{}] {} deu um fork no repositório \"{}\" em {}\n", event.id, event.actor.login, event.repo.name, event.created_at)
+            format!("\n[{}] {} deu um fork no repositório \"{}\" em {}", event.id, event.actor.login, event.repo.name, event.created_at)
         }
         "IssueCommentEvent" => {
-            format!("\n[{}] {} comentou em uma issue no repositório \"{}\" em {}\n", event.id, event.actor.login, event.repo.name, event.created_at)
+            format!("\n[{}] {} comentou em uma issue no repositório \"{}\" em {}", event.id, event.actor.login, event.repo.name, event.created_at)
         }
         "IssuesEvent" => {
-            format!("\n[{}] {} abriu uma issue no repositório \"{}\" em {}\n", event.id, event.actor.login, event.repo.name, event.created_at)
+            format!("\n[{}] {} abriu uma issue no repositório \"{}\" em {}", event.id, event.actor.login, event.repo.name, event.created_at)
         }
         "PullRequestEvent" => {
-            format!("\n[{}] {} abriu um pull request no repositório \"{}\" em {}\n", event.id, event.actor.login, event.repo.name, event.created_at)
+            format!("\n[{}] {} abriu um pull request no repositório \"{}\" em {}", event.id, event.actor.login, event.repo.name, event.created_at)
         }
         "PullRequestReviewCommentEvent" => {
-            format!("\n[{}] {} comentou em um pull request no repositório \"{}\" em {}\n", event.id, event.actor.login, event.repo.name, event.created_at)
+            format!("\n[{}] {} comentou em um pull request no repositório \"{}\" em {}", event.id, event.actor.login, event.repo.name, event.created_at)
         }
         "PushEvent" => {
-            format!("\n[{}] {} fez um push no repositório \"{}\" em {}\n", event.id, event.actor.login, event.repo.name, event.created_at)
+            format!("\n[{}] {} fez um push no repositório \"{}\" em {}", event.id, event.actor.login, event.repo.name, event.created_at)
         }
         "WatchEvent" => {
-            format!("\n[{}] {} salvou o repositório \"{}\" em {}\n", event.id, event.actor.login, event.repo.name, event.created_at)
+            format!("\n[{}] {} salvou o repositório \"{}\" em {}", event.id, event.actor.login, event.repo.name, event.created_at)
         }
         _ => {
-            format!("\n[{}] {} fez algo (?!) no repositório \"{}\" em {}\n", event.id, event.actor.login, event.repo.name, event.created_at)
+            format!("\n[{}] {} fez algo (?!) no repositório \"{}\" em {}", event.id, event.actor.login, event.repo.name, event.created_at)
         }
     }
 }
