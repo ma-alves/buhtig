@@ -1,13 +1,20 @@
 use crate::models;
 use reqwest::{blocking, header::{HeaderMap, USER_AGENT}};
 
-pub fn run(username: &str) -> Result<(), Box<dyn std::error::Error>> {
+fn get_client() -> blocking::Client {
     let mut headers = HeaderMap::new();
     headers.insert(USER_AGENT, "ma-alves".parse().unwrap());
+
     let client = blocking::Client::builder()
         .default_headers(headers)
-        .build()?;
+        .build().unwrap();
+
+    client
+}
+    
+pub fn run(username: &str) -> Result<(), Box<dyn std::error::Error>> {
     let url = format!("https://api.github.com/users/{username}/events");
+    let client = get_client();
     let response = client.get(&url)
         .send();
 
