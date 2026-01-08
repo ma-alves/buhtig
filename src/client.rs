@@ -36,7 +36,7 @@ pub fn get_user_events(username: &str) -> Result<(), Box<dyn std::error::Error>>
                         return Ok(());
                     }
                     for event in events {
-                        println!("{}", match_event(event));
+                        println!("{}", match_user_event(event));
                     }
                 }
                 Err(e) => {
@@ -51,7 +51,39 @@ pub fn get_user_events(username: &str) -> Result<(), Box<dyn std::error::Error>>
     Ok(())
 }
 
-pub fn match_event(event: models::Event) -> String {
+pub fn get_repo_events(owner: &str, repo: &str) -> Result<(), Box<dyn std::error::Error>> {
+    let url = format!("https://api.github.com/users/{owner}/{repo}/events");
+    let client = get_client();
+    let response = client.get(&url).send()?;
+
+    match response.status() {
+        reqwest::StatusCode::OK => {
+            let body = response.text();
+            let events = serde_json::from_str::<Vec<models::Event>>(&body.unwrap());
+            
+            match events {
+                Ok(events) => {
+                    if events.is_empty() {
+                        println!("\nNenhum evento recente encontrado.");
+                        return Ok(());
+                    }
+                    for event in events {
+                        println!("{}", match_repo_event(event));
+                    }
+                }
+                Err(e) => {
+                    eprintln!("{}", Box::new(e));
+                }
+            }
+        }
+        _ => {
+            return Err(format!("{}", response.status()).into());
+        }
+    }
+    Ok(())
+}
+
+pub fn match_user_event(event: models::Event) -> String {
     match event.type_.as_str() {
         "CreateEvent" => {
             format!("\n[{}] {} criou o repositório \"{}\" em {}", event.id, event.actor.login, event.repo.name, event.created_at)
@@ -86,3 +118,16 @@ pub fn match_event(event: models::Event) -> String {
     }
 }
 
+pub fn match_repo_event(event: models::Event) -> String {
+    match event.type_.as_str() {
+        "CreateEvent" => {
+            format!("\n[{}] {} criou o repositório \"{}\" em {}", event.id, event.actor.login, event.repo.name, event.created_at)
+        }
+        "DeleteEvent" => {
+            format!("\n[{}], {}, {}, {}", event.id, event.actor.login, event.repo.name, event.created_at)
+        }
+        _ => {
+            format!("\n[{}] {} fez algo (?!) no repositório \"{}\" em {}", event.id, event.actor.login, event.repo.name, event.created_at)
+        }
+    }
+}

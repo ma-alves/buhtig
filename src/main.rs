@@ -2,28 +2,27 @@ mod client;
 mod models;
 
 use clap::{Parser, Subcommand};
-use crate::client::{get_user_events};
+use crate::client::{get_repo_events, get_user_events};
 
-// Clap setup
-#[derive(Parser)]
-#[command(version, about, long_about = None)]
+#[derive(Debug, Parser)]
+#[command(name="buhtig")]
+#[command(version, about = "CLI client for GitHub user and repo events", long_about = None)]
 #[command(propagate_version = true)]
 pub struct Cli {
     #[command(subcommand)]
     pub command: Option<Commands>,
 }
 
-#[derive(Subcommand)]
+#[derive(Debug, Subcommand)]
 pub enum Commands {
-    Events { 
-        #[arg(short, long)]
+    #[command(arg_required_else_help = true)]
+    User {
         username: String 
     },
-    Repos { 
-        #[arg(short, long)]
+    #[command(arg_required_else_help = true)]
+    Repo { 
         owner: String,
-        #[arg(short, long)]
-        repo: String 
+        repo: String
     },
 }
 
@@ -31,9 +30,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args = Cli::parse();
 
     match &args.command {
-        Some(Commands::Events { username }) => {
-            println!("chamando {} no events endpoint", username);
+        Some(Commands::User { username }) => {
+            println!("chamando {} no user events endpoint", username);
             let _ = get_user_events(username)?;
+        }
+        Some(Commands::Repo { owner, repo }) => {
+            println!("chamando {}/{} no repo events endpoint", owner, repo);
+            let _ = get_repo_events(owner, repo)?;
         }
         _ => {
             println!("sem argumentos :(")
