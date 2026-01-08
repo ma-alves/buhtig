@@ -1,10 +1,10 @@
-# Buhtig
-Command line interface tool for collecting user event data on GitHub. Challenge from roadmap.sh.
+# buhtig
+CLI para consumir dados da API do GitHub sobre atividade de usuários e repositórios. Projeto baseado em uma das propostas do [roadmap.sh](https://roadmap.sh/backend/projects).
 
-## Crates
+## Principais Crates
 - [clap](https://docs.rs/clap/latest/clap/) - CLI  
 - [reqwest](https://docs.rs/reqwest/latest/reqwest/) - HTTP Client  
 - [serde](https://docs.rs/serde/latest/serde/) - Serializer  
 
-## WIP
+## To Do
 - Mostrar como instalar e usar

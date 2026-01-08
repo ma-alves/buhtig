@@ -1,9 +1,16 @@
 use crate::models;
-use reqwest::{blocking, header::{HeaderMap, USER_AGENT}};
+use reqwest::{blocking, header::{HeaderMap, USER_AGENT, AUTHORIZATION, ACCEPT}};
+
+const _GH_PAT_TOKEN: &str = "ghp_yourtokenhere";
 
 fn get_client() -> blocking::Client {
     let mut headers = HeaderMap::new();
+    headers.insert("X-GitHub-Api-Version", "2022-11-28".parse().unwrap());
+    headers.insert(ACCEPT, "application/vnd.github+json".parse().unwrap());
     headers.insert(USER_AGENT, "ma-alves".parse().unwrap());
+    // headers.insert(AUTHORIZATION, format!("Bearer {}", GH_PAT_TOKEN)
+    //     .parse()
+    //     .unwrap());
 
     let client = blocking::Client::builder()
         .default_headers(headers)
@@ -11,40 +18,37 @@ fn get_client() -> blocking::Client {
 
     client
 }
-    
-pub fn run(username: &str) -> Result<(), Box<dyn std::error::Error>> {
+
+pub fn get_user_events(username: &str) -> Result<(), Box<dyn std::error::Error>> {
     let url = format!("https://api.github.com/users/{username}/events");
     let client = get_client();
-    let response = client.get(&url)
-        .send();
+    let response = client.get(&url).send()?;
 
-    match response {
-        Ok(response) => {
+    match response.status() {
+        reqwest::StatusCode::OK => {
             let body = response.text();
             let events = serde_json::from_str::<Vec<models::Event>>(&body.unwrap());
-
+            
             match events {
                 Ok(events) => {
                     if events.is_empty() {
                         println!("\nNenhum evento recente encontrado :(");
                         return Ok(());
                     }
-
                     for event in events {
                         println!("{}", match_event(event));
                     }
                 }
-                Err(_) => {
-                    println!("\nUsuário {username} não encontrado :(")
-                    // println!("{}", Box::new(e));
+                Err(e) => {
+                    eprintln!("{}", Box::new(e));
                 }
             }
-            Ok(())
         }
-        Err(e) => {
-            Err(Box::new(e))
+        _ => {
+            return Err(format!("{}", response.status()).into());
         }
     }
+    Ok(())
 }
 
 pub fn match_event(event: models::Event) -> String {
@@ -81,3 +85,4 @@ pub fn match_event(event: models::Event) -> String {
         }
     }
 }
+

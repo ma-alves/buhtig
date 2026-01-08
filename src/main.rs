@@ -2,7 +2,7 @@ mod client;
 mod models;
 
 use clap::{Parser, Subcommand};
-use crate::client::run;
+use crate::client::{get_user_events};
 
 // Clap setup
 #[derive(Parser)]
@@ -33,7 +33,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     match &args.command {
         Some(Commands::Events { username }) => {
             println!("chamando {} no events endpoint", username);
-            let _ = run(username);
+            let _ = get_user_events(username)?;
         }
         _ => {
             println!("sem argumentos :(")
