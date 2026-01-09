@@ -31,11 +31,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     match &args.command {
         Some(Commands::User { username }) => {
-            println!("chamando {} no user events endpoint", username);
+            println!("Chamando {} no user events endpoint", username);
             let _ = get_user_events(username)?;
         }
         Some(Commands::Repo { owner, repo }) => {
-            println!("chamando {}/{} no repo events endpoint", owner, repo);
+            println!("Chamando {}/{} no repo events endpoint", owner, repo);
             let _ = get_repo_events(owner, repo)?;
         }
         _ => {
