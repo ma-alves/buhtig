@@ -11,9 +11,20 @@ CLI para consumir dados da API do GitHub sobre atividade de usuários e em repos
 ```bash
 git clone https://github.com/ma-alves/buhtig.git
 ```
-2. Crie um personal access token [aqui](https://github.com/settings/personal-access-tokens) com permissão de acesso a metadata em repositórios.
+2. Crie um personal access token [aqui](https://github.com/settings/personal-access-tokens) com permissão de acesso a Metadata em repositórios.
 3. Ajuste seu token de acesso no `.env`:
 ```bash
 cp .env.example .env
 ```
-4. WIP
+4. Teste os comandos
+```bash
+// Eventos de Usuário
+cargo run -- user <username>
+
+// Eventos no Repositório - owner representa o criador do repositório
+cargo run -- repo <owner> <repo>
+```
+Para mais informações sobre uso da ferramenta:
+```bash
+cargo run -- help
+```
