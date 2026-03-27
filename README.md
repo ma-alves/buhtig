@@ -1,6 +1,6 @@
 # Buhtig
 
-CLI para consumir dados da API do GitHub sobre atividade de usuarios e repositorios.
+CLI para consumir dados da API do GitHub sobre atividade de usuários e repositórios.
 
 ## Requisitos
 
@@ -50,6 +50,17 @@ Exemplo:
 buhtig user ma-alves
 ```
 
+Output:
+```
+Chamando ma-alves no user events endpoint
+
+ID: 12345678901
+Evento: PushEvent
+Usuário: ma-alves
+Repositório: ma-alves/buhtig
+Data: 2024-01-15T10:30:00Z
+```
+
 ### Comando `repo`
 
 Busca eventos de um repositório específico.
@@ -63,6 +74,17 @@ Exemplo:
 buhtig repo rust-lang rust
 ```
 
+Output:
+```
+Chamando ma-alves/buhtig no repo events endpoint
+
+ID: 9891631491
+Evento: PushEvent
+Usuário: ma-alves
+Repositório: ma-alves/buhtig
+Data: 2026-03-27T13:05:40Z
+```
+
 ### Opções globais
 
 ```bash
@@ -70,9 +92,9 @@ buhtig --help      # Exibe a ajuda
 buhtig --version   # Exibe a versao
 ```
 
-## Dependencias
+## Dependências
 
 - [clap](https://docs.rs/clap/latest/clap/) - Parsing de argumentos CLI
 - [reqwest](https://docs.rs/reqwest/latest/reqwest/) - Cliente HTTP
-- [serde](https://docs.rs/serde/latest/serde/) - Serializacao/Deserializacao JSON
-- [dotenv](https://docs.rs/dotenv/latest/dotenv/) - Variaveis de ambiente
+- [serde](https://docs.rs/serde/latest/serde/) - Serialização/Deserialização JSON
+- [dotenv](https://docs.rs/dotenv/latest/dotenv/) - Variáveis de ambiente
