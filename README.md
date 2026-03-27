@@ -1,30 +1,78 @@
-# buhtig
-CLI para consumir dados da API do GitHub sobre atividade de usuários e em repositórios. Projeto inspirado em uma das propostas do [roadmap.sh](https://roadmap.sh/backend/projects).
+# Buhtig
 
-## Crates
-- [clap](https://docs.rs/clap/latest/clap/) - CLI  
-- [reqwest](https://docs.rs/reqwest/latest/reqwest/) - HTTP Client  
-- [serde](https://docs.rs/serde/latest/serde/) - JSON Serializer/Deserializer  
+CLI para consumir dados da API do GitHub sobre atividade de usuarios e repositorios.
 
-## Configuração
+## Requisitos
+
+- Rust 1.70+
+- Token de acesso pessoal do GitHub
+
+## Instalação
+
 1. Clone o repositório:
 ```bash
 git clone https://github.com/ma-alves/buhtig.git
+cd buhtig
 ```
-2. Crie um personal access token [aqui](https://github.com/settings/personal-access-tokens) com permissão de acesso a Metadata em repositórios.
-3. Ajuste seu token de acesso no `.env`:
+
+2. Crie um Personal Access Token no GitHub com permissão de acesso a `Metadata`. Acesse: https://github.com/settings/personal-access-tokens
+
+3. Configure o token:
 ```bash
 cp .env.example .env
 ```
-4. Teste os comandos
-```bash
-// Eventos de Usuário
-cargo run -- user <username>
 
-// Eventos no Repositório - owner representa o criador do repositório
-cargo run -- repo <owner> <repo>
+Edite o arquivo `.env` e insira seu token:
 ```
-Para mais informações sobre uso da ferramenta:
+GITHUB_TOKEN=seu_token_aqui
+```
+
+## Build
+
 ```bash
-cargo run -- help
+cargo build --release
 ```
+
+O binário será gerado em `target/release/buhtig`.
+
+## Uso do CLI
+
+### Comando `user`
+
+Busca eventos de um usuario do GitHub.
+
+```bash
+buhtig user <username>
+```
+
+Exemplo:
+```bash
+buhtig user ma-alves
+```
+
+### Comando `repo`
+
+Busca eventos de um repositório específico.
+
+```bash
+buhtig repo <owner> <repo>
+```
+
+Exemplo:
+```bash
+buhtig repo rust-lang rust
+```
+
+### Opções globais
+
+```bash
+buhtig --help      # Exibe a ajuda
+buhtig --version   # Exibe a versao
+```
+
+## Dependencias
+
+- [clap](https://docs.rs/clap/latest/clap/) - Parsing de argumentos CLI
+- [reqwest](https://docs.rs/reqwest/latest/reqwest/) - Cliente HTTP
+- [serde](https://docs.rs/serde/latest/serde/) - Serializacao/Deserializacao JSON
+- [dotenv](https://docs.rs/dotenv/latest/dotenv/) - Variaveis de ambiente
